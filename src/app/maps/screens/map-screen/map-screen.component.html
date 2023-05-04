@@ -1,1 +1,9 @@
-<p>map-screen works!</p>
+<div class="container">
+  <ng-container *ngIf="!isUserLocationReady; else mapReady">
+    <app-loading class="row"></app-loading>
+  </ng-container>
+
+  <ng-template #mapReady>
+    <app-map-view class="row"></app-map-view>
+  </ng-template>
+</div>
