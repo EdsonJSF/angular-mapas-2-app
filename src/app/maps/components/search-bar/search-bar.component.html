@@ -1,7 +1,13 @@
 <div
   class="position-fixed top-0 start-0 m-3 p-1 bg-white shadow rounded-3 col-5 col-md-4 col-xl-3"
 >
-  <input type="text" placeholder="Buscar lugar..." class="form-control" />
+  <input
+    type="text"
+    placeholder="Buscar lugar..."
+    class="form-control"
+    #txtQuery
+    (keyup)="onQueryChanged(txtQuery.value)"
+  />
 
   <app-search-results></app-search-results>
 </div>
