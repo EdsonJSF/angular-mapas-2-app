@@ -12,7 +12,6 @@ export class SearchBarComponent {
   constructor(private placesService: PlacesService) {}
 
   onQueryChanged(query: string = '') {
-    if (!query) return;
     if (this.debounceTimer) clearTimeout(this.debounceTimer);
 
     this.debounceTimer = setTimeout(() => {
