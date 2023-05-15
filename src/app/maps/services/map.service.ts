@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LngLatLike, Map, Marker, Popup } from 'mapbox-gl';
+import { LngLatBounds, LngLatLike, Map, Marker, Popup } from 'mapbox-gl';
 
 import { Feature } from '../interfaces/places.interface';
 
@@ -27,7 +27,7 @@ export class MapService {
     });
   }
 
-  creteMarkersFromPlaces(places: Feature[]) {
+  creteMarkersFromPlaces(places: Feature[], userLocation: [number, number]) {
     if (!this.map) throw Error('Mapa no inicializado');
 
     this.markers.forEach((marker) => marker.remove());
@@ -48,5 +48,15 @@ export class MapService {
     }
 
     this.markers = newMarkers;
+
+    if (!places.length) return;
+
+    // Limites del mapa
+    const bounds = new LngLatBounds();
+    bounds.extend(userLocation);
+    newMarkers.forEach((marker) => {
+      bounds.extend(marker.getLngLat());
+    });
+    this.map.fitBounds(bounds, { padding: 200 });
   }
 }
