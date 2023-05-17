@@ -1,5 +1,12 @@
 import { Injectable } from '@angular/core';
-import { LngLatBounds, LngLatLike, Map, Marker, Popup } from 'mapbox-gl';
+import {
+  AnySourceData,
+  LngLatBounds,
+  LngLatLike,
+  Map,
+  Marker,
+  Popup,
+} from 'mapbox-gl';
 
 import { Feature } from '../interfaces/places.interface';
 import { DirectionsApiClient } from '../api/directionsApiClient';
@@ -88,6 +95,49 @@ export class MapService {
 
     this.map.fitBounds(bounds, {
       padding: 200,
+    });
+
+    // Polyline
+    // Definicion del source
+    const sourceData: AnySourceData = {
+      type: 'geojson',
+      data: {
+        type: 'FeatureCollection',
+        features: [
+          {
+            type: 'Feature',
+            properties: {},
+            geometry: {
+              type: 'LineString',
+              coordinates: coords,
+            },
+          },
+        ],
+      },
+    };
+
+    // Limpiar ruta anterior
+    if (this.map.getLayer('RouteString')) {
+      this.map.removeLayer('RouteString');
+      this.map.removeSource('RouteString');
+    }
+
+    // Se añade el source al mapa
+    this.map.addSource('RouteString', sourceData);
+
+    // Configuración de la vista del source
+    this.map.addLayer({
+      id: 'RouteString',
+      type: 'line',
+      source: 'RouteString',
+      layout: {
+        'line-cap': 'round',
+        'line-join': 'round',
+      },
+      paint: {
+        'line-color': 'black',
+        'line-width': 3,
+      },
     });
   }
 }
