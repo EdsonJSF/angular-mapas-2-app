@@ -1,13 +1,23 @@
 <div
   class="position-fixed top-0 start-0 m-3 p-1 bg-white shadow rounded-3 col-5 col-md-4 col-xl-3"
 >
-  <input
-    type="text"
-    placeholder="Buscar lugar..."
-    class="form-control"
-    #txtQuery
-    (keyup)="onQueryChanged(txtQuery.value)"
-  />
+  <div class="input-group">
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Buscar lugar..."
+      #txtQuery
+      (keyup)="onQueryChanged(txtQuery.value)"
+    />
+    <span
+      class="input-group-text btn"
+      [class]="show ? 'btn-danger' : 'btn-success'"
+      (click)="show = !show"
+      *ngIf="places.length"
+    >
+      {{ show ? "Ocultar" : "Mostrar" }}
+    </span>
+  </div>
 
-  <app-search-results></app-search-results>
+  <app-search-results *ngIf="show"></app-search-results>
 </div>
